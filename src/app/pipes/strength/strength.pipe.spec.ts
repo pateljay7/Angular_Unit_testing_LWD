@@ -12,7 +12,7 @@ describe('StrengthPipe', () => {
   });
   it('should display strong if value is >=10 and <20', () => {
     const pipe = new StrengthPipe();
-    let number = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+    let number = Math.floor(Math.random() * (19 - 10 + 1)) + 10;
     expect(pipe.transform(number)).toEqual(`${number} (strong)`);
   });
   it('should display strongest if value is >20', () => {
