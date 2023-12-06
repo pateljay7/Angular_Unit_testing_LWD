@@ -3,11 +3,16 @@ import { of } from 'rxjs';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post/post.service';
 import { PostsComponent } from './posts.component';
-
+class mockPostsService {
+  getPosts() {}
+  deletePost(post: Post) {
+    return of(true);
+  }
+}
 describe('Posts Component Isolated', () => {
   let POSTS: Post[];
   let component: PostsComponent;
-  let mockPostsService: any;
+  let postsService: any;
   beforeEach(() => {
     POSTS = [
       {
@@ -28,27 +33,28 @@ describe('Posts Component Isolated', () => {
     ];
 
     //-------------------------------------------------------------------
-    mockPostsService = jasmine.createSpyObj('postsService', [
-      'getPosts',
-      'deletePost',
-    ]);
+    // mockPostsService = jasmine.createSpyObj('postsService', [
+    //   'getPosts',
+    //   'deletePost',
+    // ]);
     TestBed.configureTestingModule({
       providers: [
         PostsComponent,
         {
           provide: PostService,
-          useValue: mockPostsService,
+          useClass: mockPostsService,
         },
       ],
     });
     component = TestBed.inject(PostsComponent);
+    postsService = TestBed.inject(PostService);
     //-------------------------------------------------------------------
     // component = new PostsComponent(mockPostsService);
   });
 
   describe('delete method', () => {
     beforeEach(() => {
-      mockPostsService.deletePost.and.returnValue(of(true));
+      // postsService.deletePost.and.returnValue(of(true));
       component.posts = POSTS;
     });
     it('should delete the selected post from the posts', () => {
@@ -58,8 +64,9 @@ describe('Posts Component Isolated', () => {
       expect(component.posts.find((p) => p.id == deletingPost?.id)).toBeFalsy();
     });
     it('should call the delete method in post service only once', () => {
+      spyOn(postsService, 'deletePost').and.callThrough(); //returnValue(of(true));
       component.deletePost(POSTS[2]);
-      expect(mockPostsService.deletePost).toHaveBeenCalledTimes(1);
+      expect(postsService.deletePost).toHaveBeenCalledTimes(1);
     });
   });
 });
