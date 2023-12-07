@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Post } from 'src/app/models/post';
@@ -16,6 +16,14 @@ describe('Posts Component Isolated', () => {
   let postsService: any;
   let mockPostsService: any;
   let fixture: ComponentFixture<PostsComponent>;
+
+  @Component({
+    selector: 'app-single-post',
+    template: '<div></div>',
+  })
+  class FakePostComponent {
+    @Input() post!: Post;
+  }
   beforeEach(() => {
     POSTS = [
       {
@@ -41,8 +49,8 @@ describe('Posts Component Isolated', () => {
       'deletePost',
     ]);
     TestBed.configureTestingModule({
-      declarations: [PostsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [PostsComponent, FakePostComponent],
+      // schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: PostService,
