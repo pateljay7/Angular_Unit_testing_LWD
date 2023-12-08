@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post/post.service';
 import { PostsComponent } from './posts.component';
+import { By } from '@angular/platform-browser';
 // class mockPostsService {
 //   getPosts() {}
 //   deletePost(post: Post) {
@@ -97,5 +98,13 @@ describe('Posts Component Isolated', () => {
     // component.ngOnInit();
     fixture.detectChanges();
     expect(component.posts.length).toBe(3);
+  });
+
+  it('should create one post child element for each post', () => {
+    mockPostsService.getPosts.and.returnValue(of(POSTS));
+    fixture.detectChanges();
+    const debugElement = fixture.debugElement;
+    const postsELement = debugElement.queryAll(By.css('app-single-post'));
+    expect(postsELement.length).toBe(POSTS.length);
   });
 });
