@@ -29,4 +29,24 @@ describe('Http Client Testing module', () => {
     request.flush(testData); // mock response data on subscribe
     expect(request.request.method).toBe('GET');
   });
+
+  it('should test multiple requests', () => {
+    const testData: Data[] = [{ name: 'jay patel' }, { name: 'meet patel' }];
+    httpClient.get<Data[]>(testUrl).subscribe((data) => {
+      expect(data.length).toBe(0);
+    });
+    httpClient.get<Data[]>(testUrl).subscribe((data) => {
+      expect(data).toEqual([testData[0]]);
+    });
+    httpClient.get<Data[]>(testUrl).subscribe((data) => {
+      expect(data).toEqual(testData);
+    });
+
+    const requests = httpTestingController.match(testUrl);
+    expect(requests.length).toBe(3);
+
+    requests[0].flush([]);
+    requests[1].flush([testData[0]]);
+    requests[2].flush(testData);
+  });
 });
