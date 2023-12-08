@@ -5,6 +5,7 @@ import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post/post.service';
 import { PostsComponent } from './posts.component';
 import { By } from '@angular/platform-browser';
+import { SinglePostComponent } from './single-post/single-post.component';
 // class mockPostsService {
 //   getPosts() {}
 //   deletePost(post: Post) {
@@ -18,13 +19,14 @@ describe('Posts Component Isolated', () => {
   let mockPostsService: any;
   let fixture: ComponentFixture<PostsComponent>;
 
-  @Component({
-    selector: 'app-single-post',
-    template: '<div></div>',
-  })
-  class FakePostComponent {
-    @Input() post!: Post;
-  }
+  // removed as we'll use original component for deep integration testing
+  // @Component({
+  //   selector: 'app-single-post',
+  //   template: '<div></div>',
+  // })
+  // class FakePostComponent {
+  //   @Input() post!: Post;
+  // }
   beforeEach(() => {
     POSTS = [
       {
@@ -50,8 +52,8 @@ describe('Posts Component Isolated', () => {
       'deletePost',
     ]);
     TestBed.configureTestingModule({
-      declarations: [PostsComponent, FakePostComponent],
-      // schemas: [NO_ERRORS_SCHEMA],
+      declarations: [PostsComponent, SinglePostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: PostService,
@@ -106,5 +108,26 @@ describe('Posts Component Isolated', () => {
     const debugElement = fixture.debugElement;
     const postsELement = debugElement.queryAll(By.css('app-single-post'));
     expect(postsELement.length).toBe(POSTS.length);
+  });
+
+  it('should create exact same number of single post component with POSTS', () => {
+    mockPostsService.getPosts.and.returnValue(of(POSTS));
+    fixture.detectChanges();
+    const PostsComponentDEs = fixture.debugElement.queryAll(
+      By.directive(SinglePostComponent)
+    );
+  });
+
+  it('should create whther exact post is sending to singlePostComponent', () => {
+    mockPostsService.getPosts.and.returnValue(of(POSTS));
+    fixture.detectChanges();
+    const PostsComponentDEs = fixture.debugElement.queryAll(
+      By.directive(SinglePostComponent)
+    );
+    for (let i = 0; i < PostsComponentDEs.length; i++) {
+      let singlePostComponentInstance = PostsComponentDEs[i]
+        .componentInstance as SinglePostComponent;
+      expect(singlePostComponentInstance.post?.title).toEqual(POSTS[i].title);
+    }
   });
 });
