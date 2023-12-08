@@ -116,6 +116,7 @@ describe('Posts Component Isolated', () => {
     const PostsComponentDEs = fixture.debugElement.queryAll(
       By.directive(SinglePostComponent)
     );
+    expect(PostsComponentDEs.length).toBe(POSTS.length)
   });
 
   it('should create whther exact post is sending to singlePostComponent', () => {
