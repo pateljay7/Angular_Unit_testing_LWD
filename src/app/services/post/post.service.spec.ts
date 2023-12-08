@@ -1,15 +1,42 @@
-// import { HttpClient } from '@angular/common/http';
-// import { TestBed } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { PostService } from './post.service';
+import { of } from 'rxjs';
 
-// import { PostService } from './post.service';
+describe('PostService', () => {
+  let postService: PostService;
+  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let POSTS = [
+    {
+      id: 1,
+      body: 'body 1',
+      title: 'title 1',
+    },
+    {
+      id: 2,
+      body: 'body 2',
+      title: 'title 2',
+    },
+    {
+      id: 3,
+      body: 'body 3',
+      title: 'title 3',
+    },
+  ];
 
-// describe('PostService', () => {
-//   let service: PostService;
-//   beforeEach(() => {
-//     service = TestBed.inject(PostService);
-//   });
-
-//   // it('should be created', () => {
-//   //   expect(service).toBeTruthy();
-//   // });
-// });
+  beforeEach(() => {
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+    postService = new PostService(httpClientSpy);
+  });
+  describe('getPosts()', () => {
+    it('should return expected posts when getPosts is called', (done: DoneFn) => {
+      httpClientSpy.get.and.returnValue(of(POSTS));
+      postService.getPosts().subscribe({
+        next: (posts) => {
+          expect(posts).toEqual(POSTS);
+          done(); // in case subscribe() may take some to execute
+        },
+      });
+      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+    });
+  });
+});
