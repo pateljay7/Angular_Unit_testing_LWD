@@ -1,0 +1,29 @@
+<div *ngIf="post">
+  <div>{{ post.title }}</div>
+  <div>{{ post.body }}</div>
+
+  <div>
+    <label>Title</label>
+    <br />
+    <textarea
+      type="text"
+      [(ngModel)]="post.title"
+      rows="5"
+      cols="50"
+    ></textarea>
+    <br />
+    <label>Body</label>
+    <br />
+    <textarea
+      type="text"
+      [(ngModel)]="post.body"
+      rows="5"
+      cols="50"
+    ></textarea>
+  </div>
+  <br />
+  <div>
+    <button (click)="back()">back</button>
+    <button (click)="save()">save</button>
+  </div>
+</div>
