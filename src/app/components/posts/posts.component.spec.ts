@@ -104,6 +104,22 @@ describe('Posts Component Isolated', () => {
         expect(component.deletePost).toHaveBeenCalledWith(POSTS[i]);
       }
     });
+
+    it('should call the delete method when delete event is emitted in post component', () => {
+      spyOn(component, 'deletePost');
+      mockPostsService.getPosts.and.returnValue(of(POSTS));
+      fixture.detectChanges();
+      let singlePostComponentDEs = fixture.debugElement.queryAll(
+        By.directive(SinglePostComponent)
+      );
+
+      for (let i = 0; i < singlePostComponentDEs.length; i++) {
+        (
+          singlePostComponentDEs[i].componentInstance as SinglePostComponent
+        ).delete.emit(POSTS[i]);
+        expect(component.deletePost).toHaveBeenCalledWith(POSTS[i]);
+      }
+    });
   });
 
   // describe('get posts method', () => {
