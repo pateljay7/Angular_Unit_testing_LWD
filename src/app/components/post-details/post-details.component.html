@@ -1,5 +1,5 @@
 <div *ngIf="post">
-  <div>{{ post.title }}</div>
+  <h2>{{ post.title }}</h2>
   <div>{{ post.body }}</div>
 
   <div>
@@ -14,12 +14,7 @@
     <br />
     <label>Body</label>
     <br />
-    <textarea
-      type="text"
-      [(ngModel)]="post.body"
-      rows="5"
-      cols="50"
-    ></textarea>
+    <textarea type="text" [(ngModel)]="post.body" rows="5" cols="50"></textarea>
   </div>
   <br />
   <div>
