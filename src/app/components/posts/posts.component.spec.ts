@@ -5,7 +5,7 @@ import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post/post.service';
 import { PostsComponent } from './posts.component';
 import { By } from '@angular/platform-browser';
-import { SinglePostComponent } from './single-post/single-post.component';
+import { SinglePostComponent } from '../single-post/single-post.component';
 // class mockPostsService {
 //   getPosts() {}
 //   deletePost(post: Post) {
