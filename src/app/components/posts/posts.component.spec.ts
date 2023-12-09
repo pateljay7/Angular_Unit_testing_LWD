@@ -88,6 +88,22 @@ describe('Posts Component Isolated', () => {
       component.deletePost(POSTS[2]);
       expect(mockPostsService.deletePost).toHaveBeenCalledTimes(1);
     });
+    it('should call delete method when post component button is clicked', () => {
+      spyOn(component, 'deletePost');
+      mockPostsService.getPosts.and.returnValue(of(POSTS));
+      fixture.detectChanges();
+
+      let postComponentDEs = fixture.debugElement.queryAll(
+        By.directive(SinglePostComponent)
+      );
+
+      for (let i = 0; i < postComponentDEs.length; i++) {
+        postComponentDEs[i]
+          .query(By.css('button'))
+          .triggerEventHandler('click', { stopPropagation: () => {} });
+        expect(component.deletePost).toHaveBeenCalledWith(POSTS[i]);
+      }
+    });
   });
 
   // describe('get posts method', () => {
@@ -116,7 +132,7 @@ describe('Posts Component Isolated', () => {
     const PostsComponentDEs = fixture.debugElement.queryAll(
       By.directive(SinglePostComponent)
     );
-    expect(PostsComponentDEs.length).toBe(POSTS.length)
+    expect(PostsComponentDEs.length).toBe(POSTS.length);
   });
 
   it('should create whther exact post is sending to singlePostComponent', () => {
