@@ -8,12 +8,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { SinglePostComponent } from './components/single-post/single-post.component';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { FormsModule } from '@angular/forms';
+import { StudentComponent } from './components/student/student.component';
 @NgModule({
   declarations: [
     AppComponent,
     PostsComponent,
     SinglePostComponent,
     PostDetailsComponent,
+    StudentComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],
