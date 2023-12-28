@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 describe('StudentComponent', () => {
   let component: StudentComponent;
   let fixture: ComponentFixture<StudentComponent>;
-
+  let h1: HTMLElement;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StudentComponent],
@@ -19,6 +19,7 @@ describe('StudentComponent', () => {
     fixture = TestBed.createComponent(StudentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    h1 = fixture.nativeElement.querySelector('h1');
   });
 
   it('should create', () => {
@@ -46,5 +47,12 @@ describe('StudentComponent', () => {
     expect(component.result).toEqual({
       result: 200,
     });
+  });
+
+  it('Verify the result value in html', () => {
+    spyOn(component, 'calculate').and.returnValue(40);
+    component.result = component.studentResult();
+    fixture.detectChanges();
+    expect(h1.textContent).toBe('Pass');
   });
 });
