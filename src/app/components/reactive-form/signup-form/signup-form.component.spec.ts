@@ -48,4 +48,50 @@ describe('SignupFormComponent', () => {
       expect(el.attributes['autocomplete']).toEqual('off');
     });
   });
+
+  describe('Form Binding', () => {
+    it('should bind the username to its FormConrol', () => {
+      const el = fixture.debugElement.query(By.css('.--username .ctrl'));
+      const ctrl = component.registerForm.get('username')!;
+
+      const name = 'jay patel';
+      ctrl.setValue(name);
+      fixture.detectChanges();
+
+      expect((el.nativeElement as HTMLInputElement).value).toEqual(name);
+    });
+
+    it('should mark username as invalid when it has no value', () => {
+      const ctrl = component.registerForm.get('username');
+
+      ctrl?.setValue(null);
+      fixture.detectChanges();
+
+      expect(ctrl?.invalid).toBeTrue();
+    });
+    it('should mark username as valie when it has value', () => {
+      const ctrl = component.registerForm.get('username');
+
+      ctrl?.setValue('Jay Patel');
+      fixture.detectChanges();
+
+      expect(ctrl?.valid).toBeTrue();
+    });
+    it('should mark username as invalid when its value is longer then 10 characters', () => {
+      const ctrl = component.registerForm.get('username');
+
+      ctrl?.setValue('Jay Patel simform');
+      fixture.detectChanges();
+
+      expect(ctrl?.invalid).toBeTrue();
+    });
+    it('should mark username as valid when its value is less then 10 characters', () => {
+      const ctrl = component.registerForm.get('username');
+
+      ctrl?.setValue('Jay Patel');
+      fixture.detectChanges();
+
+      expect(ctrl?.valid).toBeTrue();
+    });
+  });
 });

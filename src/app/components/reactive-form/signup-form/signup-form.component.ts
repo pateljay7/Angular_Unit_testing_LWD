@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class SignupFormComponent {
   constructor(private fb: FormBuilder) {}
   registerForm = this.fb.group({
-    username: [null, [Validators.required, Validators.maxLength(10)]],
+    username: ['', [Validators.required, Validators.maxLength(10)]],
     password: [null, [Validators.required]],
     gender: ['M'],
     email: [null, [Validators.required, Validators.email]],
