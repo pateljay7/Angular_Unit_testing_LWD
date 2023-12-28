@@ -94,4 +94,49 @@ describe('SignupFormComponent', () => {
       expect(ctrl?.valid).toBeTrue();
     });
   });
+
+  describe('Select Element Testing', () => {
+    it('shoule have a ctrl-row element with class --team', () => {
+      const el = fixture.debugElement.query(By.css('.ctrl-row.--team'));
+      expect(el).toBeTruthy();
+    });
+
+    it('should have a label with class ctrl-label for the team field', () => {
+      const el = fixture.debugElement.query(By.css('.--team label'));
+      expect(el).toBeTruthy();
+      expect(el.attributes['for']).toEqual('team');
+    });
+
+    it('should render correct number of team options', () => {
+      const teamList = [
+        { id: 1, name: 'team 1' },
+        { id: 2, name: 'team 2' },
+        { id: 3, name: 'team 3' },
+      ];
+      component.teamList = teamList;
+      fixture.detectChanges();
+
+      const optionEl = fixture.debugElement.queryAll(By.css('.--team option'));
+      expect(optionEl.length).toBe(teamList.length + 1);
+    });
+
+    it('should display correct text on the dropdown options', () => {
+      const teamList = [
+        { id: 1, name: 'team 1' },
+        { id: 2, name: 'team 2' },
+        { id: 3, name: 'team 3' },
+      ];
+      component.teamList = teamList;
+      fixture.detectChanges();
+
+      const optionEl = fixture.debugElement.queryAll(By.css('.--team option'));
+      optionEl.forEach((option, index) => {
+        if (index != 0) {
+          expect(
+            (option.nativeElement as HTMLOptionElement).innerText.trim()
+          ).toEqual(teamList[index - 1]['name']);
+        }
+      });
+    });
+  });
 });
