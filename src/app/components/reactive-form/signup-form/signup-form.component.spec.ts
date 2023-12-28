@@ -96,6 +96,11 @@ describe('SignupFormComponent', () => {
   });
 
   describe('Select Element Testing', () => {
+    const teamList = [
+      { id: 1, name: 'team 1' },
+      { id: 2, name: 'team 2' },
+      { id: 3, name: 'team 3' },
+    ];
     it('shoule have a ctrl-row element with class --team', () => {
       const el = fixture.debugElement.query(By.css('.ctrl-row.--team'));
       expect(el).toBeTruthy();
@@ -108,11 +113,6 @@ describe('SignupFormComponent', () => {
     });
 
     it('should render correct number of team options', () => {
-      const teamList = [
-        { id: 1, name: 'team 1' },
-        { id: 2, name: 'team 2' },
-        { id: 3, name: 'team 3' },
-      ];
       component.teamList = teamList;
       fixture.detectChanges();
 
@@ -121,11 +121,6 @@ describe('SignupFormComponent', () => {
     });
 
     it('should display correct text on the dropdown options', () => {
-      const teamList = [
-        { id: 1, name: 'team 1' },
-        { id: 2, name: 'team 2' },
-        { id: 3, name: 'team 3' },
-      ];
       component.teamList = teamList;
       fixture.detectChanges();
 
@@ -137,6 +132,39 @@ describe('SignupFormComponent', () => {
           ).toEqual(teamList[index - 1]['name']);
         }
       });
+    });
+
+    it('should bind the team to its FormControl', () => {
+      const el = fixture.debugElement.query(By.css('.--team .ctrl'));
+      const ctrl = component.registerForm.get('team');
+      component.teamList = teamList;
+
+      const value = component.teamList[0];
+      ctrl?.setValue(value.id);
+      fixture.detectChanges();
+
+      const selectedTeam =
+        component.teamList[
+          (el.nativeElement as HTMLSelectElement).selectedIndex - 1
+        ];
+      expect(selectedTeam).toEqual(value);
+    });
+
+    it('should mark team as invalid when it has no value', () => {
+      const ctrl = component.registerForm.get('team');
+
+      ctrl?.setValue(null);
+      fixture.detectChanges();
+
+      expect(ctrl?.invalid).toBeTruthy();
+    });
+    it('should mark team as valid when it has value', () => {
+      const ctrl = component.registerForm.get('team');
+
+      ctrl?.setValue(1);
+      fixture.detectChanges();
+
+      expect(ctrl?.valid).toBeTruthy();
     });
   });
 });

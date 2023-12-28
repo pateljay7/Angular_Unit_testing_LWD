@@ -13,7 +13,7 @@ export class SignupFormComponent {
     password: [null, [Validators.required]],
     gender: ['M'],
     email: [null, [Validators.required, Validators.email]],
-    team: [null, [Validators.required]],
+    team: [null || 0, [Validators.required]],
     subscription: [true],
   });
   teamList: { id: number; name: string }[] = [
