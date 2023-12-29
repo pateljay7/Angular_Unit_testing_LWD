@@ -10,9 +10,9 @@ export class SignupFormComponent {
   constructor(private fb: FormBuilder) {}
   registerForm = this.fb.group({
     username: ['', [Validators.required, Validators.maxLength(10)]],
-    password: [null, [Validators.required]],
+    password: ['', [Validators.required]],
     gender: ['M'],
-    email: [null, [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email]],
     team: [null || 0, [Validators.required]],
     subscription: [true],
   });
@@ -26,7 +26,8 @@ export class SignupFormComponent {
     return this.registerForm.valid;
   }
 
-  submitForm(): void {
+  submitForm(event: Event): void {
+    event.stopPropagation();
     if (!this.isFormValid()) {
       window.alert('Please fill all the fields before submitting the form!');
     }

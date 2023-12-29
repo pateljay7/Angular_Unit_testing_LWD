@@ -167,4 +167,89 @@ describe('SignupFormComponent', () => {
       expect(ctrl?.valid).toBeTruthy();
     });
   });
+
+  describe('Radio button element testing', () => {
+    describe('Html validations', () => {
+      it('should have ctrl-row element with class --gender', () => {
+        const el = fixture.debugElement.query(By.css('.ctrl-row.--gender'));
+        expect(el).toBeTruthy();
+      });
+
+      it('should have label with class ctrl-label for the gender field', () => {
+        const el = fixture.debugElement.query(
+          By.css('.--gender label.ctrl-label')
+        );
+        expect(el).toBeTruthy();
+        expect(el.attributes['for']).toEqual('gender');
+      });
+
+      it('should display gender on the label for the gender field', () => {
+        const el = fixture.debugElement.query(
+          By.css('.--gender label.ctrl-label')
+        );
+        expect(el).toBeTruthy();
+        expect(el.nativeElement.innerText).toEqual('Gender');
+      });
+
+      it('should have female and male options in gender field', () => {
+        const maleEl = fixture.debugElement.query(By.css('.--gender .--male'));
+        const femaleEl = fixture.debugElement.query(
+          By.css('.--gender .--female')
+        );
+        expect(maleEl).toBeTruthy();
+        expect(femaleEl).toBeTruthy();
+      });
+
+      it('should have an input element with class radio-ctrl for the female radio-option', () => {
+        const el = fixture.debugElement.query(By.css('.--female input'));
+        expect(el).toBeTruthy();
+        expect(el.attributes['type']).toEqual('radio');
+        expect(el.attributes['id']).toEqual('female');
+        expect(el.attributes['name']).toEqual('gender');
+        expect(el.attributes['value']).toEqual('F');
+      });
+    });
+
+    describe('Form binding', () => {
+      it('should bind the gender to its formControl when male is selected', () => {
+        const maleOption = fixture.debugElement.query(
+          By.css('.--male .radio-ctrl')
+        ).nativeElement as HTMLInputElement;
+        const femaleOption = fixture.debugElement.query(
+          By.css('.--female .radio-ctrl')
+        ).nativeElement as HTMLInputElement;
+        const ctrl = component.registerForm.get('gender');
+        ctrl?.setValue('M');
+
+        expect(maleOption.checked).toBeTruthy();
+        expect(femaleOption.checked).toBeFalsy();
+      });
+
+      it('should set the default value of gender to male', () => {
+        const ctrl = component.registerForm.get('gender')!;
+        expect(ctrl.value).toEqual('M');
+      });
+    });
+  });
+
+  describe('Submit form test cases', () => {
+    it('should enalble save button if invalid form', () => {
+      component.registerForm.patchValue({
+        email: 'pateljaykjp@gmail.com',
+        gender: 'M',
+        password: '123456789',
+        team: 1,
+        username: 'Jay Patel',
+      });
+      fixture.detectChanges();
+      const sumbitBtn = fixture.debugElement.query(By.css('.submit-btn'))
+        .nativeElement as HTMLButtonElement;
+      expect(sumbitBtn.disabled).toBeFalse();
+    });
+    it('should disable save button if invalid form', () => {
+      const sumbitBtn = fixture.debugElement.query(By.css('.submit-btn'))
+        .nativeElement as HTMLButtonElement;
+      expect(sumbitBtn.disabled).toBeTrue();
+    });
+  });
 });
